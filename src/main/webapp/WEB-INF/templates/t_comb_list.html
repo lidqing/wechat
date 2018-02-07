@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="-webkit- pixel-ratio-1">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- 政策法规-->
+    <title>建水河长</title>
+    <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+          name="viewport">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta content="no-cache,must-revalidate" http-equiv="Cache-Control">
+    <meta content="no-cache" http-equiv="pragma">
+    <meta content="0" http-equiv="expires">
+    <meta content="telephone=no, address=no" name="format-detection">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <link rel="stylesheet" type="text/css" href="/static/css/weui.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/jquery-weui.min.css">
+    <script type="text/javascript" src="/static/lib/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery-weui.min.js"></script>
+    <link href="/static/css/global.css" rel="stylesheet" type="text/css">
+    <style>
+        img {
+            border: none;
+            max-width: 100%;
+            height: 100%;
+        }
+        .media_title {
+            white-space: normal
+        }
+        .weui-media-box_appmsg {
+            display: block;
+            position: relative;
+        }
+    </style>
+</head>
+
+<body id="weisite" ontouchstart="" style="">
+
+<div class="container" id="container">
+    <!-- 下拉刷新-->
+    <div class="weui-pull-to-refresh__layer">
+        <div class='weui-pull-to-refresh__arrow'></div>
+        <div class='weui-pull-to-refresh__preloader'></div>
+        <div class="down">下拉刷新</div>
+        <div class="up">释放刷新</div>
+        <div class="refresh">正在刷新</div>
+    </div>
+    <!-- 正文开始-->
+    <div class="page__bd">
+        <div class="weui-panel weui-panel_access">
+            <!--<div class="weui-panel__hd">文字组合列表</div> -->
+            <div class="weui-panel__bd" id="content">
+
+                <a th:each="data:${list}" th:href="@{http://lidq.free.ngrok.cc/news/article(articleId=${data.law_code})}"
+                   class="weui-media-box weui-media-box_appmsg">
+                    <div class="weui-media-box_text">
+                        <h4 th:text="${data.law_name}" class="weui-media-box__title">标题</h4>
+                        <p th:text="${data.law_summary}" class="weui-media-box__desc">子标题</p>
+                    </div>
+                </a>
+
+                <!--
+                <a href="http://lidq.free.ngrok.cc/news/article?articleId=1"
+                   class="weui-media-box weui-media-box_appmsg">
+
+                    <div class="weui-media-box_text">
+                        <h4 class="weui-media-box__title">国务院关于修改部分行政法规的决定</h4>
+                        <p class="weui-media-box__desc">国务院关于修改部分行政法规的决定（中华人民共和国国务院令第687号） 2017-11-03</p>
+                    </div>
+                </a>
+                <a href="http://lidq.free.ngrok.cc/news/article?articleId=1"
+                   class="weui-media-box weui-media-box_appmsg">
+
+                    <div class=" weui-media-box_text">
+                        <h4 class="weui-media-box__title">国务院关于取消一批行政许可事项的决定</h4>
+                        <p class="weui-media-box__desc">国务院关于取消一批行政许可事项的决定 2017-10-09</p>
+                    </div>
+                </a>
+                <a href="http://lidq.free.ngrok.cc/news/article?articleId=1"
+                   class="weui-media-box weui-media-box_appmsg">
+                    <div class=" weui-media-box_text">
+                        <h4 class="weui-media-box__title">中华人民共和国国务院令第676号国务院关于修改和废止部分行政法规的决定</h4>
+                        <p class="weui-media-box__desc">中华人民共和国国务院令第676号国务院关于修改和废止部分行政法规的决定 2017-09-11</p>
+                    </div>
+                </a>
+                <a href="http://lidq.free.ngrok.cc/news/article?articleId=1"
+                   class="weui-media-box weui-media-box_appmsg">
+                <div class=" weui-media-box_text">
+                    <h4 class="weui-media-box__title">国务院关于修改部分行政法规的决定</h4>
+                    <p class="weui-media-box__desc">国务院关于修改部分行政法规的决定（中华人民共和国国务院令第687号）2017-11-03</p>
+                </div>
+                </a>
+                <a href="http://lidq.free.ngrok.cc/news/article?articleId=1"
+                   class="weui-media-box weui-media-box_appmsg">
+                <div class=" weui-media-box_text">
+                    <h4 class="weui-media-box__title">云南省政府法律顾问工作规定</h4>
+                    <p class="weui-media-box__desc">云南省政府法律顾问工作规定 2017-07-21</p>
+                </div>
+                </a>
+                <a href="http://lidq.free.ngrok.cc/news/article?articleId=1"
+                   class="weui-media-box weui-media-box_appmsg">
+                <div class=" weui-media-box_text">
+                    <h4 class="weui-media-box__title">云南省水土流失防治费及水土保持设施补偿费的征收标准和使用管理暂行办法</h4>
+                    <p class="weui-media-box__desc">云南省水土流失防治费及水土保持设施补偿费的征收标准和使用管理暂行办法 2017-06-30</p>
+                </div>
+                </a>
+                <a href="http://lidq.free.ngrok.cc/news/article?articleId=1"
+                   class="weui-media-box weui-media-box_appmsg">
+                <div class=" weui-media-box_text">
+                    <h4 class="weui-media-box__title">云南省重大行政执法决定法制审核办法</h4>
+                    <p class="weui-media-box__desc">云南省重大行政执法决定法制审核办法 2017-01-19</p>
+                </div>
+                </a>
+                <a href="http://lidq.free.ngrok.cc/news/article?articleId=1"
+                   class="weui-media-box weui-media-box_appmsg">
+                <div class=" weui-media-box_text">
+                    <h4 class="weui-media-box__title">云南省水利科学技术经费筹集与使用管理办法</h4>
+                    <p class="weui-media-box__desc">云南省水利科学技术经费筹集与使用管理办法 2016-11-11</p>
+                </div>
+                </a>
+                <a href="http://lidq.free.ngrok.cc/news/article?articleId=1"
+                   class="weui-media-box weui-media-box_appmsg">
+                <div class=" weui-media-box_text">
+                    <h4 class="weui-media-box__title">铁路安全管理条例</h4>
+                    <p class="weui-media-box__desc">铁路安全管理条例 2016-09-20</p>
+                </div>
+                </a>
+                -->
+            </div>
+
+        </div>
+    </div>
+    <!-- 正文结束-->
+
+    <!-- 滚动加载 -->
+    <div class="weui-loadmore">
+        <i class="weui-loading"></i>
+        <span class="weui-loadmore__tips">正在加载</span>
+    </div>
+</div>
+<script>
+
+    //下拉刷新
+    $(document.body).pullToRefresh(function () {
+        // 下拉刷新触发时执行的操作放这里。
+        // 从 v1.1.2 版本才支持回调函数，之前的版本只能通过事件监听
+        //do something
+        console.log("refresh...");
+        setTimeout(function(){
+            $(document.body).pullToRefreshDone();//加载完成，重置刷新状态
+        },2000);
+    });
+
+    //滚动加载初始化并监听事件
+    var loading = false;  //状态标记
+    $(document.body).infinite().on("infinite", function() {
+        console.log("loading1....");
+        if(loading) return;
+        loading = true;
+        console.log("loading2....");
+        setTimeout(function() {
+            $("#content").append($("#content").html());
+            loading = false;
+            //$(document.body).destroyInfinite();
+            //$(document.body).infinite();
+        }, 1500);   //模拟延迟
+    });
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p" 
+    xsi:schemaLocation="http://www.springframework.org/schema/beans  
+    http://www.springframework.org/schema/beans/spring-beans.xsd  
+    http://www.springframework.org/schema/tx  
+    http://www.springframework.org/schema/tx/spring-tx.xsd  
+    http://www.springframework.org/schema/context   
+    http://www.springframework.org/schema/context/spring-context.xsd  
+    http://www.springframework.org/schema/aop  
+    http://www.springframework.org/schema/aop/spring-aop.xsd  
+    http://www.springframework.org/schema/jdbc  
+    http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd  
+    http://www.springframework.org/schema/util        
+    http://www.springframework.org/schema/util/spring-util-4.3.xsd  
+    http://www.springframework.org/schema/mvc   
+    http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd"  
+	default-lazy-init="true">
+
+	<mvc:annotation-driven />
+	<!-- 包扫描器 -->
+	<context:component-scan base-package="com" />
+	<!-- 配置文件 -->
+	<util:properties id="wxProperties" location="classpath:/wx.properties" />
+
+	<!-- ViewResolver配置 -->
+	<!--Thymeleaf 视图解析器，优先级最高-->
+	<bean id="templateResolver"
+	      class="org.thymeleaf.templateresolver.ServletContextTemplateResolver" >
+	    <property name="prefix" value="/WEB-INF/templates/" />
+	    <property name="suffix" value=".html" />
+	    <property name="templateMode" value="HTML5" />
+	    <!-- Template cache is set to false (default is true).        -->  
+	    <property name="cacheable" value="false" />  
+        <property name="characterEncoding" value="UTF-8"/>  
+	    <property name="order" value="#{T(org.springframework.core.Ordered).HIGHEST_PRECEDENCE}" />
+	</bean>
+	<bean id="templateEngine"
+	      class="org.thymeleaf.spring4.SpringTemplateEngine">
+	    <property name="templateResolver" ref="templateResolver" />
+	</bean>
+	<bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
+	    <property name="templateEngine" ref="templateEngine" />
+	    <property name="characterEncoding" value="UTF-8"/>
+	</bean>
+    
+    <!-- jsp视图解析器，viewNames与suffix的区别在于：使用viewNames，返回的路径必须带jsp，suffix则必须省略 -->
+	 <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:order="3">
+	  <!-- 该类表示可以使用java标签库 -->
+	  <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+	  <property name="viewNames" value="*.jsp" /> 
+	  <property name="contentType" value="text/html" />
+	  <property name="prefix" value="/WEB-INF/jsp/" />
+	  <!-- <property name="suffix" value=".jsp" />-->
+	 </bean>
+	
+	 
+	 <!-- 放行public/static/html目录下的静态资源
+     <mvc:resources location="/html/" mapping="/html/**"/>
+     <mvc:resources location="/public/" mapping="/public/**"/>
+     <mvc:resources location="/static/" mapping="/static/**"/>
+     -->
+     <!-- 放行所有静态资源，springmvc不进行拦截 -->
+     <mvc:default-servlet-handler/>
+     <!-- 用于设置默认的访问页面 -->
+     <mvc:view-controller path="/a" view-name="index.html"/>
+     
+     
+    <!-- 数据源、ORM框架支撑配置 -->
+    <util:properties id="dataSourceProps" location="classpath:application.properties"/>
+  	<!-- 配置数据源 -->
+    <bean id="dataSourceFacade" class="org.logicalcobwebs.proxool.ProxoolFacade" destroy-method="shutdown"/>
+    <!-- 配置数据源 连接池 -->
+    <bean id="dataSource" class="org.logicalcobwebs.proxool.ProxoolDataSource">
+        <property name="alias" value="myDataSource"></property>
+        <property name="delegateProperties">
+            <value>user=#{dataSourceProps['jdbc.username']},password=#{dataSourceProps['jdbc.password']}</value>
+        </property>
+        <property name="user" value="#{dataSourceProps['jdbc.username']}"/>
+        <property name="password" value="#{dataSourceProps['jdbc.password']}"/>
+        <property name="driver" value="#{dataSourceProps['jdbc.driver']}"/>
+        <property name="driverUrl" value="#{dataSourceProps['jdbc.url']}"/>
+        <!-- 自动检查连接是否断的测试sql语句 -->
+        <property name="houseKeepingTestSql" value="select 1 from dual"></property>
+        <!-- 自动检查连接是否断掉开关 -->
+        <property name="testBeforeUse" value="true"></property>
+        <!-- 连接池允许的最大连接数-->
+        <property name="maximumConnectionCount" value="#{dataSourceProps['jdbc.maximumConnectionCount']}"></property>
+        <!-- 连接池开启的最小连接数 -->
+        <property name="minimumConnectionCount" value="#{dataSourceProps['jdbc.minimumConnectionCount']}"></property>
+        <!-- 一个数据库操作的最长时间,单位毫秒 -->
+        <property name="maximumActiveTime" value="#{dataSourceProps['jdbc.maximumActiveTime']}"></property>
+        
+        <!--此处继续增加proxool属性，详细见proxool文档-->
+    </bean>
+	<!-- 
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+      <property name="driverClassName" value="#{dataSourceProps['jdbc.driver']}"/>
+      <property name="url" value="#{dataSourceProps['jdbc.url']}"/>
+      <property name="username" value="#{dataSourceProps['jdbc.username']}"/>
+      <property name="password" value="#{dataSourceProps['jdbc.password']}"/>
+    </bean>
+  	-->
+	<!-- 数据源配置,在测试环境使用JDBC直接连接 -->
+<!-- 
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName">
+            <value>jdbc/vmp</value>
+        </property>
+    </bean>
+-->
+
+	<!-- 使用annotation定义事务 ，即在service层可以使用@Transactional定义事务-->
+	<tx:annotation-driven transaction-manager="transactionManager"
+		proxy-target-class="true" />
+	
+	 <!-- 事务管理器 -->  
+    <bean id="transactionManager"  
+        class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
+        <property name="dataSource" ref="dataSource" />  
+    </bean>  
+
+	<!-- 运行脚本初始化内存数据库 -->
+	<!-- jdbc:initialize-database data-source="dataSource" 
+		ignore-failures="DROPS" >
+		<jdbc:script location="classpath:schema.sql" />
+	</jdbc:initialize-database-->
+	
+	<bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"> 
+   		<property name="dataSource" ref="dataSource" /> 
+    	<property name="configLocation" value="classpath:mybatis-config-portal.xml" />
+   </bean>
+   
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactory" ref="sessionFactory" />
+        <property name="basePackage" value="com.nationsky.**.dao" />
+    </bean>
+    
+    <!-- JSON格式数据转换器，把@responseBody返回的java对象自动转换为json格式 -->
+    <bean id="mappingJacksonHttpMessageConverter"  
+        class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">  
+        <property name="supportedMediaTypes">  
+            <list>  
+                <value>application/json;charset=UTF-8</value>  
+            </list>  
+        </property>  
+        <property name="objectMapper">  
+        	<!-- 自定义时间格式类 -->
+        	<bean id="customObjectMapper" class="com.web.base.system.CustomJsonDateConverter" />
+	        <!--  自定义
+	        <bean class="com.fasterxml.jackson.databind.ObjectMapper">  
+	            <property name="serializerProvider">  
+	                <bean class="com.fasterxml.jackson.databind.ser.DefaultSerializerProvider.Impl">  
+	                    <property name="nullValueSerializer">  
+	                        <bean class="cn.com.mx.gome.flash.component.GomeSearchJsonSerializer"></bean>  
+	                    </property>  
+	                </bean>  
+	            </property>  
+	        </bean>  
+	        -->
+  	  	</property>  
+    </bean>  
+    
+     
+</beans>

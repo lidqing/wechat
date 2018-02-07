@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/wechat.iml" filepath="$PROJECT_DIR$/wechat.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../weixin-java-tools/weixin-java-common/weixin-java-common.iml" filepath="$PROJECT_DIR$/../weixin-java-tools/weixin-java-common/weixin-java-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../weixin-java-tools/weixin-java-mp/weixin-java-mp.iml" filepath="$PROJECT_DIR$/../weixin-java-tools/weixin-java-mp/weixin-java-mp.iml" />
+    </modules>
+  </component>
+</project>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nationsky.busi.dao.NewsDao">
+
+    <select id="listPolicyAndLaws" parameterType="map" resultType="map">
+    SELECT law_code,law_name,law_summary,law_author,add_time
+    FROM
+        tapp_policy_law
+    WHERE
+        check_status = 1
+    </select>
+
+    <select id="getPolicyAndLawsById" parameterType="string" resultType="map">
+        select law_name,law_summary,law_content,add_time
+        from tapp_policy_law
+        where law_code = #{lawId}
+        and check_status = 1
+    </select>
+
+
+</mapper>

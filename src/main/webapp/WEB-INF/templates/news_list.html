@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=321,initial-scale=2.4,maximum-scale=2.4">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <title th:text="${title}"></title>
+
+	<link rel="stylesheet" href="/static/js/layui-v2.1.1/css/layui.css">
+	<script src="/static/js/layui-v2.1.1/layui.all.js" ></script>
+	<script src="/static/js/jquery-1.8.0.min.js" type="text/javascript" charset="utf-8"></script>
+	<style type="text/css">
+	.wrap{
+		width: 320px;
+		margin: 0 auto;
+	}
+	</style>
+</head>
+<body>
+
+<div class="wrap">
+	<h1>hello world ssss2 + ${title}</h1>
+	<h2 th:text="${title}"></h2>
+	<div class="nav">
+	
+	</div>
+	<div class="main">
+		<ul>
+			<li th:each="row:${list}">
+				<p>
+					<a th:text="${row.name + '  '+row.date}" th:href="${row.url}">政策法规111111111111111111111111111</a>
+					<span></span>
+				</p>
+			</li>
+		</ul>
+	</div>
+</div>
+</body>
+
+</html>

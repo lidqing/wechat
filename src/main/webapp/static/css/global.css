@@ -1,0 +1,35 @@
+@charset "utf-8";
+/* CSS Document by sitom use in weisite */
+.container{ background-color:#FFFFFF}
+
+html *{
+	font-family: -apple-system-font,"Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;	
+}
+
+h1.media_title {
+    margin-bottom: 10px;
+    line-height: 1.4;
+    font-weight: 400;
+    font-size: 24px;
+}
+.media_meta_list {
+    position: relative;
+    z-index: 10;
+	margin-bottom: 18px;
+    line-height: 20px;
+    font-size: 0;
+}
+.media_meta_list em {
+    font-style: normal;
+}
+.media_meta_text {
+    color: #8c8c8c;
+}
+.media_meta {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 8px;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
