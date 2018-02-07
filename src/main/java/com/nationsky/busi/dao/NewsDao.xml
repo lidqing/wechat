@@ -10,6 +10,8 @@
         tapp_policy_law
     WHERE
         check_status = 1
+    order by add_time desc
+    limit ${startIndex},${size}
     </select>
 
     <select id="getPolicyAndLawsById" parameterType="string" resultType="map">

@@ -20,6 +20,7 @@
     <link rel="stylesheet" type="text/css" href="/static/css/jquery-weui.min.css">
     <script type="text/javascript" src="/static/lib/jquery-2.0.3.min.js"></script>
     <script type="text/javascript" src="/static/js/jquery-weui.min.js"></script>
+    <script type="text/javascript" src="/common/staticvar"></script>
     <link href="/static/css/global.css" rel="stylesheet" type="text/css">
     <style>
         img {
@@ -139,34 +140,47 @@
     <div class="weui-loadmore">
         <i class="weui-loading"></i>
         <span class="weui-loadmore__tips">正在加载</span>
+        <span class="weui-nomore__tips" style="display: none">没有更多了</span>
     </div>
+    
 </div>
+<script type="text/javascript" src="/static/js/comm.js"></script>
 <script>
+    var page = 1;
+    function loadAjaxData(index) {
+        App.getAjaxData(domain+"/news/getLaws?page="+index,{},function (data) {
+            if(data.length == 0){
+                App.destroyInfinite(document.body);
+                return false;
+            }
+            var html = "";
+            for(var i = 0;i<data.length;i++){
+                var row = data[i];
+                html +='<a href="'+domain+'/news/article?articleId='+row.law_code+'"';
+                html +='class="weui-media-box weui-media-box_appmsg">';
+                html +='    <div class="weui-media-box_text">';
+                html +='    <h4 class="weui-media-box__title">'+row.law_name+'</h4>';
+                html +='    <p  class="weui-media-box__desc">'+row.law_summary+'</p>';
+                html +='    </div>';
+                html +='    </a>';
+            }
+            if(index==1){
+                $("#content").empty();
+                App.infinite(document.body);
+                page = 1;
+            }
+            $("#content").append(html);
+
+        });
+    }
 
     //下拉刷新
-    $(document.body).pullToRefresh(function () {
-        // 下拉刷新触发时执行的操作放这里。
-        // 从 v1.1.2 版本才支持回调函数，之前的版本只能通过事件监听
-        //do something
-        console.log("refresh...");
-        setTimeout(function(){
-            $(document.body).pullToRefreshDone();//加载完成，重置刷新状态
-        },2000);
+    App.pullToRefresh(document.body,function () {
+        loadAjaxData(1);
     });
-
-    //滚动加载初始化并监听事件
-    var loading = false;  //状态标记
-    $(document.body).infinite().on("infinite", function() {
-        console.log("loading1....");
-        if(loading) return;
-        loading = true;
-        console.log("loading2....");
-        setTimeout(function() {
-            $("#content").append($("#content").html());
-            loading = false;
-            //$(document.body).destroyInfinite();
-            //$(document.body).infinite();
-        }, 1500);   //模拟延迟
+    //滚动加载
+    App.rollingLoad(document.body,function () {
+        loadAjaxData(++page);
     });
 
 </script>
